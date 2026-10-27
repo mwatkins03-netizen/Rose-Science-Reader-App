@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Use Clarify</title>
+<meta name="description" content="A student guide to Clarify's three layers: reading with a pencil, Jev's numbers on acetate, and the Gemini reading coach.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --desk: #e7e3da; --paper: #fffdf8; --paper-2: #faf6ec; --card: #fffefb; --ink: #1f1d1a; --ink-2: #4b4842; --muted: #7a756b; --rule: #ddd5c4;
+  --pen: #2c4f8f; --red: #b8372e; --graphite: #4b4a47; --jev: #0f6f8f; --gem: #5b4a9e;
+  --hl-claim: #ffd84d; --hl-evidence: #9ee39f; --hl-method: #9fcff5; --hl-lost: #ff9fbd;
+  --sans: "Inter", ui-sans-serif, -apple-system, "Segoe UI", sans-serif; --serif: "Source Serif 4", Georgia, serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--desk); color: var(--ink); font: 16px/1.6 var(--sans); }
+a { color: var(--pen); }
+:focus-visible { outline: 2px solid var(--pen); outline-offset: 2px; }
+.top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 16px; padding: 10px 22px; background: rgba(250,246,236,.96); border-bottom: 1px solid var(--rule); }
+.top .mark { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--hl-claim); font: 700 17px var(--serif); }
+.top b { font: 700 18px var(--serif); }
+.top nav { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+.btn { border: 1px solid var(--ink); background: var(--ink); color: var(--paper); border-radius: 8px; padding: 6px 12px; font: 600 13.5px var(--sans); text-decoration: none; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--ink); border-color: #c9c1ae; }
+.page { max-width: 860px; margin: 32px auto 60px; padding: 56px 64px 64px; background: var(--paper); box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 10px 30px rgba(40,34,20,.10); }
+.eyebrow { font: 600 11px var(--mono); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+h1 { font: 700 40px/1.1 var(--serif); margin: 6px 0 12px; letter-spacing: -.01em; }
+h2 { font: 700 27px/1.2 var(--serif); margin: 54px 0 10px; padding-top: 18px; border-top: 1px solid var(--ink); }
+h2 .n { font: 600 13px var(--mono); color: var(--muted); display: block; margin-bottom: 4px; letter-spacing: .08em; }
+h3 { font: 700 18px var(--serif); margin: 28px 0 6px; }
+.lede { font: 19px/1.55 var(--serif); color: var(--ink-2); margin: 0 0 18px; }
+p, li { color: var(--ink); }
+.toc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 26px 0 8px; }
+.toc a { display: block; text-decoration: none; color: var(--ink); background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 14px; border-top: 3px solid var(--graphite); }
+.toc a:nth-child(2) { border-top-color: var(--jev); } .toc a:nth-child(3) { border-top-color: var(--gem); }
+.toc b { display: block; font: 700 17px var(--serif); }
+.toc span { font-size: 13.5px; color: var(--ink-2); }
+.toc .k { font: 600 11px var(--mono); color: var(--muted); }
+.note { background: var(--paper-2); border-left: 3px solid var(--rule); padding: 10px 16px; margin: 16px 0; font-size: 15px; }
+.note.jev { border-left-color: var(--jev); } .note.gem { border-left-color: var(--gem); } .note.warn { border-left-color: var(--red); }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; margin: 12px 0; }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--rule); }
+th { font: 600 12px var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); border-bottom: 1px solid var(--ink); }
+kbd { font: 500 12px var(--mono); border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; background: var(--card); }
+.sw { display: inline-block; width: 24px; height: 12px; border-radius: 3px; vertical-align: middle; }
+.sw.claim { background: var(--hl-claim); } .sw.evidence { background: var(--hl-evidence); } .sw.method { background: var(--hl-method); } .sw.lost { background: var(--hl-lost); }
+.demo { position: relative; margin: 18px 0; padding: 22px 26px; background: var(--paper); border: 1px solid var(--rule); box-shadow: 0 4px 14px rgba(40,34,20,.06); }
+.demo p { font: 17px/1.75 var(--serif); margin: 0; position: relative; z-index: 1; }
+.demo svg { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; mix-blend-mode: multiply; z-index: 2; }
+.demo .cap { font: 12px var(--mono); color: var(--muted); margin-top: 10px; position: relative; z-index: 1; }
+.demo svg .hl { stroke: none; } .demo svg .hl-pass { fill: none; opacity: .3; stroke-linecap: round; }
+.demo svg .c-claim { fill: var(--hl-claim); stroke: var(--hl-claim); } .demo svg .c-evidence { fill: var(--hl-evidence); stroke: var(--hl-evidence); }
+.demo svg .c-method { fill: var(--hl-method); stroke: var(--hl-method); } .demo svg .c-lost { fill: var(--hl-lost); stroke: var(--hl-lost); }
+.demo svg .pencil { fill: none; stroke: var(--graphite); stroke-linecap: round; opacity: .85; }
+.demo svg .redpencil { fill: none; stroke: var(--red); stroke-linecap: round; opacity: .85; }
+.demo svg .bluepencil { fill: none; stroke: var(--pen); stroke-linecap: round; opacity: .85; }
+.passes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 14px 0; }
+.passes div { background: #fffefa; border: 1px solid #e6dfcf; padding: 26px 14px 12px; position: relative;
+  background-image: linear-gradient(transparent 19px, #e88f8a 19px, #e88f8a 20px, transparent 20px); background-repeat: no-repeat; }
+.passes b { position: absolute; top: 2px; left: 14px; font: 600 11px var(--mono); color: var(--red); text-transform: uppercase; letter-spacing: .06em; }
+.passes h4 { margin: 4px 0 4px; font: 700 16px var(--serif); }
+.passes p { margin: 0; font-size: 14px; color: var(--ink-2); }
+.tag-demo { display: grid; grid-template-columns: 200px 1fr; gap: 22px; align-items: start; margin: 16px 0; padding: 18px; border: 1px solid rgba(15,111,143,.32);
+  background: linear-gradient(118deg, rgba(210,236,246,.25), rgba(255,255,255,.4) 40%, rgba(210,236,246,.12)); }
+.jtag { font: 500 12px/1.35 var(--mono); color: var(--jev); text-align: right; }
+.jtag .role { font-weight: 600; letter-spacing: .06em; }
+.jtag .bar { display: block; height: 3px; width: 84%; margin: 4px 0 4px auto; background: var(--jev); border-radius: 2px; }
+.jtag .dots { display: inline-flex; gap: 3px; vertical-align: middle; } .jtag .dots i { width: 7px; height: 7px; border: 1px solid var(--jev); border-radius: 50%; } .jtag .dots i.on { background: var(--jev); }
+.jtag .star { color: #b0600c; font-weight: 600; }
+.tag-demo ol { margin: 0; padding-left: 20px; font-size: 14.5px; }
+.tag-demo li { margin-bottom: 4px; }
+.steps { counter-reset: s; list-style: none; padding: 0; }
+.steps > li { counter-increment: s; position: relative; padding-left: 40px; margin: 10px 0; }
+.steps > li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; font: 600 12.5px var(--mono); }
+.promise { background: #f4f1fa; border: 1px solid #d8d0ee; border-radius: 10px; padding: 12px 18px; }
+.promise ul { margin: 6px 0; padding-left: 18px; }
+.quote { font: 15px/1.5 var(--mono); background: var(--paper-2); padding: 10px 14px; border-radius: 6px; }
+details { border-bottom: 1px solid var(--rule); padding: 10px 0; }
+summary { cursor: pointer; font: 600 16px var(--serif); }
+details p { margin: 8px 0 0; color: var(--ink-2); font-size: 15px; }
+.foot { max-width: 860px; margin: 0 auto 40px; font-size: 12.5px; color: var(--muted); padding: 0 8px; }
+@media (max-width: 760px) { .page { padding: 32px 20px; margin: 0; } .toc, .passes { grid-template-columns: 1fr; } .tag-demo { grid-template-columns: 1fr; } h1 { font-size: 32px; } }
+@media print { .top, .no-print { display: none; } body { background: #fff; } .page { box-shadow: none; margin: 0; max-width: none; padding: 0; } h2 { break-after: avoid; } .demo, .tag-demo, table { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="mark" aria-hidden="true">C</span><b>Clarify</b>
+  <nav><a class="btn ghost" href="#pencil">1 Pencil</a><a class="btn ghost" href="#jev">2 Jev</a><a class="btn ghost" href="#gemini">3 Gemini</a><button class="btn ghost" onclick="print()">Print this guide</button><a class="btn" href="../index.html">Open Clarify</a></nav>
+</header>
+
+<main class="page">
+  <span class="eyebrow">Student guide</span>
+  <h1>How to use Clarify</h1>
+  <p class="lede">Scientific papers are hard to read until someone shows you how. Clarify gives you a way in: you read the paper with a pencil first, and only then bring in two kinds of AI to check your reading and coach you through the hard parts.</p>
+  <p>Clarify has three layers. They're tabs at the top of the app, and they're meant to be used in order. Each one sits on top of the last, the way a clear sheet sits on top of a page.</p>
+
+  <div class="toc">
+    <a href="#pencil"><span class="k">LAYER 1</span><b>Pencil</b><span>You read and mark the paper. No AI. Everything here is your thinking.</span></a>
+    <a href="#jev"><span class="k">LAYER 2</span><b>Jev</b><span>An AI that answers in numbers, not words. A second opinion on your marks.</span></a>
+    <a href="#gemini"><span class="k">LAYER 3</span><b>Gemini</b><span>An AI that talks, held to rules. A coach for the parts you're still stuck on.</span></a>
+  </div>
+
+  <div class="note"><b>Why this order?</b> If an AI explains the paper first, you end up remembering the explanation, not the paper. If you read first, the AI has something to work with: your questions, your confusion, your words. That's what makes the help useful.</div>
+
+  <h2 id="start"><span class="n">BEFORE YOU START</span>Get a paper into Clarify</h2>
+  <p>Choose <b>Change paper</b> at the top right. You have four ways in:</p>
+  <table>
+    <tr><th>Way</th><th>When to use it</th></tr>
+    <tr><td><b>Practice paper</b></td><td>Your first time. A short paper about city lights and birdsong, written for Clarify. The study is made up, but it's built like a real paper.</td></tr>
+    <tr><td><b>Open-access search</b></td><td>To find a free, full paper on a topic. Type a few words, or a PMCID like <code>PMC6061754</code>.</td></tr>
+    <tr><td><b>Upload a file</b></td><td>When you already have the paper as a PDF, a Word file (.docx), or a text file. Choose the file or drag it onto the box.</td></tr>
+    <tr><td><b>Paste</b></td><td>When you can copy the text from a web page. Leave a blank line between paragraphs.</td></tr>
+  </table>
+  <div class="note warn"><b>Check an uploaded PDF before you use it.</b> PDFs don't store paragraphs. They store words at positions on a page, and Clarify has to guess where paragraphs start. After you upload, the text shows up in the box so you can look it over. Delete things that aren't part of the paper's argument, like author addresses, page headers, and table scraps. Fix a paragraph that got cut in two. Then choose <b>Use this text</b>. A scanned PDF (pictures of pages) has no text to read; find another copy.</div>
+  <p>Your file is read inside your browser. It isn't uploaded anywhere. Each paper keeps its own marks, so switching papers doesn't erase anything.</p>
+
+  <h2 id="pencil"><span class="n">LAYER 1</span>Pencil: you read</h2>
+  <p>Scientists don't read a paper once from top to bottom. They read it three times, each time looking for something different. The left panel walks you through the three passes.</p>
+  <div class="passes">
+    <div><b>Pass 1 · 5 min</b><h4>Survey</h4><p>Read only the title, abstract, headings, figures, and the last paragraph of the discussion. Then write the question the paper asks, in your words.</p></div>
+    <div><b>Pass 2 · the long one</b><h4>Mark it up</h4><p>Read everything. Mark claims, evidence, methods, and the places you get lost. Circle words you can't define.</p></div>
+    <div><b>Pass 3 · 10 min</b><h4>Say it back</h4><p>At the end of each section is an index card. Write one or two sentences about what the section does, without looking. Then check.</p></div>
+  </div>
+
+  <h3>The marks</h3>
+  <p>Select some words in the paper and a row of tools appears. Each highlighter color means one thing, and only one thing. That's what makes your marks useful later.</p>
+  <table>
+    <tr><th>Mark</th><th>Key</th><th>Use it for</th></tr>
+    <tr><td><span class="sw claim"></span> Claim</td><td><kbd>1</kbd></td><td>Something the authors say is true. Usually a finding or a conclusion.</td></tr>
+    <tr><td><span class="sw evidence"></span> Evidence</td><td><kbd>2</kbd></td><td>The numbers or observations behind a claim.</td></tr>
+    <tr><td><span class="sw method"></span> Method</td><td><kbd>3</kbd></td><td>What the researchers did: who or what they studied, what they measured, how.</td></tr>
+    <tr><td><span class="sw lost"></span> Lost</td><td><kbd>4</kbd></td><td>Where you stopped following. This is the most useful mark you can make. Don't skip it out of pride.</td></tr>
+    <tr><td>Underline</td><td><kbd>U</kbd></td><td>Worth rereading later.</td></tr>
+    <tr><td>Circle</td><td><kbd>O</kbd></td><td>A word you can't define. It goes to your word list, where you write a guess before you look it up.</td></tr>
+    <tr><td>Callout box</td><td><kbd>B</kbd></td><td>A phrase you want to comment on. A note card appears in the margin.</td></tr>
+    <tr><td>Question</td><td><kbd>Q</kbd></td><td>A sticky note in the margin for a question you'd ask the authors.</td></tr>
+    <tr><td>Bracket</td><td><kbd>[</kbd></td><td>A whole paragraph. Label what it's doing, like "the big limitation" or "why this matters."</td></tr>
+  </table>
+
+  <div class="demo" id="demo">
+    <p id="demoText">We measured night-time light at ground level with a handheld photometer on three moonless nights. Each tenfold increase in night-time light was associated with singing 7.1 minutes earlier (95% CI: 4.6–9.6). These results suggest that night lighting may shift the start of the avian day.</p>
+    <div class="cap">Method in blue, evidence in green, the authors' claim in yellow, a circled word, an underline to reread.</div>
+  </div>
+  <p>To erase a mark or change its color, click it. A margin note has its own × button.</p>
+  <div class="note"><b>A tip from people who read papers for a living:</b> if you highlight everything, you've highlighted nothing. Try for at most one claim per paragraph. If you can't pick one, that's a sign to mark it Lost.</div>
+
+  <h3>Reading ruler</h3>
+  <p>Turn on the reading ruler (<kbd>R</kbd>) and an index card sits under the paragraph you're on while everything else fades. It's the same trick as holding a card under a line of a textbook. It helps with long, dense sections.</p>
+
+  <h3>Using only the keyboard</h3>
+  <p><kbd>Tab</kbd> moves from paragraph to paragraph. <kbd>Enter</kbd> starts selecting words. <kbd>←</kbd> <kbd>→</kbd> move one word, and <kbd>Shift</kbd> + arrows stretch the selection. Then press a mark's key. <kbd>Esc</kbd> stops selecting. The <b>Keys</b> button in the app lists them all. To turn off animation, check <b>Less motion</b> there.</p>
+
+  <h3>My breakdown</h3>
+  <p>The <b>My breakdown</b> button collects your work onto one printable page: the paper's question, what each section does, your claims, evidence, methods, lost spots, questions, words, and "so what?" Empty spots tell you which pass to go back to. Nothing on this sheet is written by AI, so it's a fair thing to study from or hand in if your instructor asks for notes.</p>
+
+  <h2 id="jev"><span class="n">LAYER 2</span>Jev: a second opinion, in numbers</h2>
+  <p>Jev is an AI model made by TypeSafe AI. It's different from ChatGPT or Gemini: <b>it never writes a sentence.</b> You give it text and a question, and it gives back a probability. That's all. So it can't read the paper for you, but it can tell you how sure it is about a few specific things.</p>
+  <p>Choose <b>Lay the acetate</b>. Jev reads each paragraph and asks four questions about it. Its answers appear on a clear sheet over your page. Uncheck <b>Show</b> to lift the sheet off and see your own marks alone.</p>
+
+  <h3>Reading one of Jev's tags</h3>
+  <div class="tag-demo">
+    <div class="jtag" aria-hidden="true"><span class="role">RESULT 96%</span><span class="bar"></span>hedge <span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span> <span class="star">★ finding</span><br>density 2/3</div>
+    <ol>
+      <li><b>RESULT 96%</b> is the paragraph's job: background, gap (the question), method, result, interpretation, limitation, or implication. The percent is how sure Jev is. The bar shows the same thing.</li>
+      <li><b>Hedge dots</b> show how certain the language is, from one dot ("might," "could") to four ("proves," "causes").</li>
+      <li><b>★ finding</b> means Jev thinks this paragraph states one of the study's main findings.</li>
+      <li><b>Density</b> is how hard Jev thinks it is for a first-year student, from 0 (plain) to 3 (jargon all the way down).</li>
+    </ol>
+  </div>
+  <p>Faded tags are ones Jev was unsure about. Click any tag to see every number and the exact question Jev was asked.</p>
+
+  <h3>Second looks</h3>
+  <p>The left panel lists places where your marks and Jev's numbers disagree. For example: you marked something as a method, but Jev reads the paragraph as a result. Or Jev thinks a paragraph states a main finding and you left it blank. These sentences are written by rules a person wrote; Jev only supplied the numbers.</p>
+  <div class="note jev"><b>A second look is not a correction.</b> Jev can be wrong, and sometimes you'll be right. Click the ¶ number, reread, and decide. If you still disagree with Jev, good: you just made a judgment about a scientific paper.</div>
+
+  <h3>Check my cards and sort my questions</h3>
+  <p><b>Check my cards</b> compares each say-it-back card with the section it describes. It flags a card that's off, one that sounds more certain than the authors (dropping their "may"), one that adds a claim the paper doesn't make, and one that copies the paper's wording. <b>Sort my questions</b> looks at your question stickies and tells you where in the paper to look: Methods, Results, Discussion, or outside the paper entirely.</p>
+  <p>Jev only sees one paragraph, card, or question at a time, sent through a small server that doesn't keep anything. Your other marks stay on your computer.</p>
+
+  <h2 id="gemini"><span class="n">LAYER 3</span>Gemini: a coach with rules</h2>
+  <p>Gemini writes, which makes it more helpful than Jev and also riskier. Ask a chatbot "explain this paper" and you get a smooth summary that does your reading for you, and may quietly make the findings sound surer than they are. Clarify gives Gemini a <b>skill file</b>, a set of rules that turns it into a reading coach instead.</p>
+
+  <div class="promise">
+    <b>What the Clarify coach promises</b>
+    <ul>
+      <li>It asks what you think before it explains.</li>
+      <li>It points to paragraph numbers (¶7) so you can check it against the paper.</li>
+      <li>It keeps the authors' "may" and "suggests," and won't make a finding sound surer than it is.</li>
+      <li>It says when the paper doesn't answer your question.</li>
+      <li>It won't write your say-it-back cards for you.</li>
+      <li>If you say "just tell me," it will, briefly, and then check that you can use it.</li>
+      <li>It ends with a one-line note on how you used AI.</li>
+    </ul>
+  </div>
+
+  <h3>Set it up once</h3>
+  <ol class="steps">
+    <li>In Clarify, open the <b>Gemini</b> tab and choose <b>Download SKILL.md</b> and <b>Download Gem instructions</b>.</li>
+    <li>Go to gemini.google.com and sign in with your university account. Open <b>Gems</b>, then <b>New Gem</b>.</li>
+    <li>Name it <b>Clarify Reading Coach</b>. Paste the Gem instructions into the Instructions box. Upload SKILL.md as a knowledge file. Save.</li>
+  </ol>
+  <p>Don't see Gems? Use <b>Copy skill + packet</b> instead and paste both into a regular Gemini chat. Ask your instructor which option your account has.</p>
+
+  <h3>Every time you use it</h3>
+  <ol class="steps">
+    <li>Do layer 1 first. The coach is only as good as your packet. The <b>Ready?</b> list in the Gemini tab shows what's missing.</li>
+    <li>Choose what goes in your packet: the paper's text, your marks, your cards and words, and (if you want) Jev's numbers.</li>
+    <li>Choose <b>Copy packet</b>, open your Gem, and paste.</li>
+    <li>The coach starts by naming something you did well and offering three next moves. Pick one.</li>
+  </ol>
+  <p>The coach uses named moves so you learn them too: <b>Untangle</b> a sentence you're lost in, a <b>Word ladder</b> for a term, a <b>Figure walk</b>, <b>Claim to evidence</b>, <b>Method check</b>, <b>Numbers in plain words</b> (what a p-value or confidence interval does and doesn't mean), <b>Say-it-back feedback</b>, <b>So what</b>, and <b>Explain it to a friend</b> as an exit ticket.</p>
+
+  <div class="note gem"><b>If it breaks a rule, say so.</b> Type: <span class="quote">That's against the Clarify rules. Ask me first.</span> or <span class="quote">Which paragraph says that?</span> If it can't point to a paragraph, treat what it said as general background, not as what this paper found.</div>
+  <div class="note warn"><b>Be honest about using it.</b> At the end, the coach gives you a one-line AI-use note. Keep it with your notes, and check your course's AI policy before using any of this in graded work. Your packet goes to Google when you paste it, so leave out anything private.</div>
+
+  <h2 id="session"><span class="n">PUTTING IT TOGETHER</span>A first session, about 45 minutes</h2>
+  <table>
+    <tr><th>Time</th><th>Layer</th><th>Do this</th></tr>
+    <tr><td>5 min</td><td>Pencil</td><td>Pass 1: survey. Write the paper's question.</td></tr>
+    <tr><td>20 min</td><td>Pencil</td><td>Pass 2: mark it up. Be honest with pink.</td></tr>
+    <tr><td>5 min</td><td>Pencil</td><td>Pass 3: write your index cards without looking.</td></tr>
+    <tr><td>5 min</td><td>Jev</td><td>Lay the acetate. Work through the second looks. Check your cards.</td></tr>
+    <tr><td>10 min</td><td>Gemini</td><td>Paste your packet. Untangle your worst Lost spot. Finish with Explain it to a friend.</td></tr>
+  </table>
+  <p>Last step: open <b>My breakdown</b>, fix anything you now understand better, and print it or save it as a PDF.</p>
+
+  <h2 id="faq"><span class="n">QUESTIONS</span>Good to know</h2>
+  <details><summary>Where is my work saved?</summary><p>In this browser on this computer. It stays there until you clear your browser's site data. It doesn't follow you to another computer, so print or save your breakdown if you'll need it elsewhere.</p></details>
+  <details><summary>Can I go back to a paper later?</summary><p>Yes. <b>Change paper</b> lists your papers at the top. Each one keeps its own marks.</p></details>
+  <details><summary>Jev and I disagree. Who's right?</summary><p>Reread the paragraph and decide. Jev reads one paragraph at a time and can't see the rest of the paper. A low percent means it wasn't sure either.</p></details>
+  <details><summary>Can I skip straight to Gemini?</summary><p>You can, but the coach will ask you to read first, and it'll have much less to work with. Most of what makes it helpful comes from your marks.</p></details>
+  <details><summary>My uploaded PDF looks messy.</summary><p>That's normal for PDFs, especially two-column journal articles. Clean up the text in the box before choosing Use this text. If the journal has an HTML version, copying from that and pasting is often cleaner.</p></details>
+  <details><summary>Does Clarify use my work to train AI?</summary><p>Clarify itself stores nothing on a server. Jev's server doesn't keep what it reads. What you paste into Gemini follows Google's terms for your university account.</p></details>
+</main>
+<footer class="foot">Clarify is a Grove Lab student build. Idea by Rose Stafford, Biology, Senior. Prototype layers by Marc Watkins, University of Mississippi, coded with Anthropic's Claude. This guide was drafted with Claude.</footer>
+
+<script src="../js/ink.js"></script>
+<script>
+/* Draw real Clarify marks on the demo paragraph with the app's own ink. */
+(function () {
+  const demo = document.getElementById("demo"), p = document.getElementById("demoText"), t = p.firstChild;
+  const marks = [
+    ["handheld photometer on three moonless nights", "hl", "method", "d1"],
+    ["7.1 minutes earlier (95% CI: 4.6–9.6)", "hl", "evidence", "d2"],
+    ["night lighting may shift the start of the avian day", "hl", "claim", "d3"],
+    ["photometer", "circle", null, "d4"],
+    ["Each tenfold increase in night-time light", "ul", null, "d5"]
+  ];
+  function draw() {
+    demo.querySelectorAll("svg").forEach(s => s.remove());
+    const svg = Ink.el("svg", { width: demo.offsetWidth, height: demo.offsetHeight, "aria-hidden": "true" }, demo);
+    Ink.defs(svg);
+    const under = Ink.el("g", { filter: "url(#inkgrain)" }, svg), over = Ink.el("g", { filter: "url(#graphite)" }, svg);
+    const o = demo.getBoundingClientRect();
+    marks.forEach(([phrase, tool, color, id]) => {
+      const s = t.data.indexOf(phrase); if (s < 0) return;
+      const r = document.createRange(); r.setStart(t, s); r.setEnd(t, s + phrase.length);
+      const ls = Ink.lines(r.getClientRects()).map(l => ({ left: l.left - o.left, right: l.right - o.left, top: l.top - o.top, bottom: l.bottom - o.top }));
+      const rnd = Ink.seed(id);
+      if (tool === "hl") Ink.highlighter(Ink.el("g", {}, under), ls, "c-" + color, rnd);
+      else if (tool === "ul") Ink.underline(Ink.el("g", {}, over), ls, rnd);
+      else Ink.circle(Ink.el("g", {}, over), ls, rnd);
+    });
+  }
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(draw);
+  let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(draw, 120); });
+})();
+</script>
+</body>
+</html>

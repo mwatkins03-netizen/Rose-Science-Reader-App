@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clarify</title>
+<meta name="description" content="Clarify: read a scientific article with a pencil first, then see what Jev and Gemini can add. A Grove Lab student build.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/clarify.css">
+</head>
+<body data-layer="pencil">
+<a class="skip" href="#sheet">Skip to the paper</a>
+
+<header class="top">
+  <div class="brand">
+    <span class="mark" aria-hidden="true">C</span>
+    <div>
+      <h1>Clarify</h1>
+      <p>Read a scientific paper with a pencil first.</p>
+    </div>
+  </div>
+  <nav class="layers" role="tablist" aria-label="Layers">
+    <button role="tab" id="tab-pencil" aria-selected="true" aria-controls="rail" data-layer="pencil"><b>1</b> Pencil <span>you read</span></button>
+    <button role="tab" id="tab-jev" aria-selected="false" aria-controls="rail" data-layer="jev"><b>2</b> Jev <span>numbers on acetate</span></button>
+    <button role="tab" id="tab-gemini" aria-selected="false" aria-controls="rail" data-layer="gemini"><b>3</b> Gemini <span>a coach, with rules</span></button>
+  </nav>
+  <div class="top-acts">
+    <a class="btn ghost" href="how-to-use/index.html" target="_blank" rel="noopener">How to use</a>
+    <button class="btn ghost" id="btnPaper">Change paper</button>
+    <button class="btn ghost" id="btnHelp" aria-label="Keyboard and help">Keys</button>
+    <button class="btn" id="btnSheet">My breakdown</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="rail" id="rail" aria-label="Reading guide">
+    <!-- PENCIL -->
+    <section class="rail-pane" data-pane="pencil">
+      <div class="card passes">
+        <h2>Three passes</h2>
+        <p class="hint">Scientists rarely read a paper top to bottom once. They read it three times, each time for something different.</p>
+        <ol class="pass-list">
+          <li data-pass="1">
+            <button class="pass-head" aria-expanded="true"><span class="pn">1</span> Survey <small>5 minutes</small></button>
+            <div class="pass-body">
+              <label class="chk"><input type="checkbox" data-survey="title"> Title and abstract</label>
+              <label class="chk"><input type="checkbox" data-survey="heads"> Every heading</label>
+              <label class="chk"><input type="checkbox" data-survey="figs"> Figures and captions</label>
+              <label class="chk"><input type="checkbox" data-survey="last"> Last paragraph of the discussion</label>
+              <label class="field" for="question">The question this paper asks, in my words</label>
+              <textarea id="question" rows="3" placeholder="Does ___ change ___?"></textarea>
+            </div>
+          </li>
+          <li data-pass="2">
+            <button class="pass-head" aria-expanded="true"><span class="pn">2</span> Mark it up <small>the long pass</small></button>
+            <div class="pass-body">
+              <p class="hint">Select words in the paper, then pick a tool. Each highlighter color means one thing.</p>
+              <ul class="legend">
+                <li><i class="sw hl-claim"></i><span><b>Claim</b>what they say is true</span><kbd>1</kbd></li>
+                <li><i class="sw hl-evidence"></i><span><b>Evidence</b>numbers, data</span><kbd>2</kbd></li>
+                <li><i class="sw hl-method"></i><span><b>Method</b>what they did</span><kbd>3</kbd></li>
+                <li><i class="sw hl-lost"></i><span><b>Lost</b>I don't follow</span><kbd>4</kbd></li>
+                <li><i class="sw ul"></i><span><b>Underline</b>worth rereading</span><kbd>U</kbd></li>
+                <li><i class="sw circ"></i><span><b>Circle</b>a word I can't define</span><kbd>O</kbd></li>
+                <li><i class="sw box"></i><span><b>Callout box</b>with a margin note</span><kbd>B</kbd></li>
+                <li><i class="sw q"></i><span><b>Question</b>sticky note</span><kbd>Q</kbd></li>
+                <li><i class="sw br"></i><span><b>Bracket</b>a whole paragraph</span><kbd>[</kbd></li>
+              </ul>
+              <p class="tally" id="tally"></p>
+            </div>
+          </li>
+          <li data-pass="3">
+            <button class="pass-head" aria-expanded="true"><span class="pn">3</span> Say it back <small>your words</small></button>
+            <div class="pass-body">
+              <p class="hint">An index card waits at the end of each section. Write one or two sentences without looking. Then check.</p>
+              <p class="tally" id="saybackTally"></p>
+              <label class="field" for="sowhat">So what? Why would anyone care?</label>
+              <textarea id="sowhat" rows="3" placeholder="This matters because…"></textarea>
+            </div>
+          </li>
+        </ol>
+      </div>
+      <div class="card words">
+        <h2>Words I circled</h2>
+        <p class="hint">Guess from context first. Then look it up and fix your guess.</p>
+        <ul id="wordList" class="word-list"></ul>
+      </div>
+      <div class="card tools-card">
+        <label class="chk"><input type="checkbox" id="rulerToggle"> Reading ruler <kbd>R</kbd></label>
+        <p class="hint">An index card under the paragraph you're on. Everything else fades.</p>
+      </div>
+    </section>
+
+    <!-- JEV -->
+    <section class="rail-pane" data-pane="jev" hidden>
+      <div class="card">
+        <h2>Jev reads on acetate</h2>
+        <p class="hint">Jev never writes a sentence. It answers questions we wrote with probabilities. Its marks go on a clear sheet laid over your paper, so you can lift it off and see your own reading again.</p>
+        <div class="row">
+          <button class="btn" id="jevRead">Lay the acetate</button>
+          <label class="chk inline"><input type="checkbox" id="jevShow" checked> Show</label>
+        </div>
+        <div class="progress" id="jevProg" hidden><div class="bar"><i></i></div><span></span></div>
+        <p class="hint small" id="jevConn"></p>
+      </div>
+      <div class="card">
+        <h2>Second looks</h2>
+        <p class="hint">Where Jev's numbers and your pencil disagree. Jev can be wrong. Each note is a reason to reread, not a correction.</p>
+        <ul id="secondLooks" class="looks"><li class="empty">Lay the acetate to see where you and Jev differ.</li></ul>
+      </div>
+      <div class="card">
+        <h2>Check my say-it-backs</h2>
+        <p class="hint">Jev compares each index card with the section it describes.</p>
+        <button class="btn ghost" id="jevSayback">Check my cards</button>
+        <ul id="saybackChecks" class="looks"></ul>
+      </div>
+      <div class="card">
+        <h2>Sort my questions</h2>
+        <p class="hint">Where in the paper should each sticky note send you?</p>
+        <button class="btn ghost" id="jevQuestions">Sort my questions</button>
+        <ul id="questionSorts" class="looks"></ul>
+      </div>
+      <details class="card about">
+        <summary>What Jev was asked</summary>
+        <div id="jevAsked"></div>
+      </details>
+    </section>
+
+    <!-- GEMINI -->
+    <section class="rail-pane" data-pane="gemini" hidden>
+      <div class="card">
+        <h2>Hand it to Gemini</h2>
+        <p class="hint">Gemini writes. That makes it more helpful and riskier than Jev. The Clarify skill tells it to coach from your marks, ask before it tells, and point to paragraph numbers.</p>
+        <ol class="steps">
+          <li>Make a Gem with the skill (once).</li>
+          <li>Build your packet from your marks.</li>
+          <li>Paste the packet into the Gem.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h2>Your packet includes</h2>
+        <label class="chk"><input type="checkbox" id="pkText" checked> The paper's text, numbered</label>
+        <label class="chk"><input type="checkbox" id="pkMarks" checked> My marks and notes</label>
+        <label class="chk"><input type="checkbox" id="pkSay" checked> My say-it-backs and words</label>
+        <label class="chk"><input type="checkbox" id="pkJev"> Jev's numbers</label>
+        <p class="hint small">Pasting sends this to Google. Leave out anything private.</p>
+      </div>
+      <div class="card readiness">
+        <h2>Ready?</h2>
+        <ul id="readiness"></ul>
+      </div>
+    </section>
+  </aside>
+
+  <main class="desk" id="desk">
+    <div class="stage" id="stage">
+      <article class="sheet" id="sheet" aria-label="The paper"></article>
+      <aside class="margin" id="margin" aria-label="Margin notes"></aside>
+      <svg class="ink" id="ink" aria-hidden="true"></svg>
+      <div class="acetate" id="acetate" aria-label="Jev's acetate sheet" hidden>
+        <div class="acetate-tab">JEV · acetate</div>
+        <div class="acetate-tags" id="acetateTags"></div>
+      </div>
+      <div class="ruler-card" id="rulerCard" hidden aria-hidden="true"></div>
+      <div class="palette" id="palette" role="toolbar" aria-label="Mark the selection" hidden>
+        <button data-tool="hl" data-color="claim" title="Claim (1)"><i class="sw hl-claim"></i><span>Claim</span></button>
+        <button data-tool="hl" data-color="evidence" title="Evidence (2)"><i class="sw hl-evidence"></i><span>Evidence</span></button>
+        <button data-tool="hl" data-color="method" title="Method (3)"><i class="sw hl-method"></i><span>Method</span></button>
+        <button data-tool="hl" data-color="lost" title="Lost (4)"><i class="sw hl-lost"></i><span>Lost</span></button>
+        <span class="sep"></span>
+        <button data-tool="ul" title="Underline (U)"><i class="sw ul"></i><span>Underline</span></button>
+        <button data-tool="circle" title="Circle a word (O)"><i class="sw circ"></i><span>Circle</span></button>
+        <button data-tool="box" title="Callout box (B)"><i class="sw box"></i><span>Box</span></button>
+        <button data-tool="q" title="Question (Q)"><i class="sw q"></i><span>Question</span></button>
+      </div>
+      <div class="markpop" id="markpop" role="dialog" aria-label="This mark" hidden></div>
+    </div>
+
+    <section class="gem-desk" id="gemDesk" hidden aria-label="Gemini hand-off">
+      <div class="gem-col">
+        <div class="manuscript">
+          <div class="ms-head">
+            <div><span class="eyebrow">The skill file</span><h2>clarify-reading-coach</h2></div>
+            <div class="row"><button class="btn ghost" id="dlSkill">Download SKILL.md</button><button class="btn ghost" id="dlGem">Download Gem instructions</button></div>
+          </div>
+          <div class="ms-tabs" role="tablist" aria-label="Skill files">
+            <button role="tab" aria-selected="true" data-file="skill">SKILL.md</button>
+            <button role="tab" aria-selected="false" data-file="gem">Gem instructions</button>
+            <button role="tab" aria-selected="false" data-file="setup">How to set it up</button>
+          </div>
+          <pre class="ms-body" id="skillBody" tabindex="0">Loading…</pre>
+        </div>
+      </div>
+      <div class="gem-col">
+        <div class="manuscript packet">
+          <div class="ms-head">
+            <div><span class="eyebrow">Your packet</span><h2 id="packetTitle">Built from your marks</h2></div>
+            <div class="row">
+              <button class="btn" id="copyPacket">Copy packet</button>
+              <button class="btn ghost" id="copyBoth" title="For Gemini without a Gem: the skill and the packet in one paste">Copy skill + packet</button>
+              <button class="btn ghost" id="dlPacket">Download</button>
+              <a class="btn ghost" href="https://gemini.google.com/app" target="_blank" rel="noopener">Open Gemini</a>
+            </div>
+          </div>
+          <pre class="ms-body" id="packetBody" tabindex="0"></pre>
+        </div>
+        <div class="contract">
+          <h3>What the Clarify coach promises</h3>
+          <ul>
+            <li>It asks what you think before it explains.</li>
+            <li>It points to paragraph numbers so you can check it.</li>
+            <li>It keeps the authors' "may" and "suggests." It won't make a finding sound surer than it is.</li>
+            <li>It says when the paper doesn't answer your question.</li>
+            <li>It won't write your say-it-backs for you.</li>
+            <li>It ends with a one-line note on how you used AI.</li>
+          </ul>
+          <p class="hint">If it breaks a promise, tell it: "That's against the Clarify rules."</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer class="foot">
+  <div><b>Clarify</b>: a Grove Lab student build. Idea by Rose Stafford, Biology, Senior. Prototype layers by Marc Watkins, University of Mississippi, coded with Anthropic's Claude.</div>
+  <div><b>Privacy.</b> Your marks and notes stay in this browser. Layer 2 sends one paragraph at a time to Jev (TypeSafe AI) through a proxy that stores nothing. Layer 3 sends only what you paste into Gemini.</div>
+</footer>
+
+<!-- dialogs -->
+<dialog id="dlgPaper" class="dlg" aria-labelledby="dlgPaperH">
+  <h2 id="dlgPaperH">Choose a paper</h2>
+  <div class="paper-opts">
+    <section>
+      <h3>Practice paper</h3>
+      <p class="hint">A short paper written for Clarify about city lights and birdsong. The study is invented. The structure is real.</p>
+      <button class="btn" id="loadSpecimen">Open the practice paper</button>
+    </section>
+    <section>
+      <h3>Open-access paper</h3>
+      <p class="hint">Search Europe PMC for a free full-text paper, or paste a PMCID (like PMC6061754).</p>
+      <form id="pmcForm" class="row">
+        <label class="sr" for="pmcQ">Search or PMCID</label>
+        <input id="pmcQ" placeholder="sleep memory, or PMC…" autocomplete="off">
+        <button class="btn">Find</button>
+      </form>
+      <ul id="pmcResults" class="pmc-results" aria-live="polite"></ul>
+    </section>
+    <section>
+      <h3>Upload or paste your own</h3>
+      <div class="drop" id="dropZone">
+        <input type="file" id="fileIn" accept=".pdf,.docx,.txt,.md,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown" class="sr">
+        <label for="fileIn" class="btn ghost">Choose a file</label>
+        <span>or drop a PDF, Word (.docx), or text file here</span>
+      </div>
+      <p class="hint small" id="fileMsg" aria-live="polite">The file is read inside your browser. It isn't uploaded anywhere.</p>
+      <p class="hint">Or paste the text. Leave a blank line between paragraphs. Short lines like "Methods" become headings. The reference list is dropped.</p>
+      <label class="sr" for="pasteTitle">Title</label>
+      <input id="pasteTitle" placeholder="Title">
+      <label class="sr" for="pasteText">Article text</label>
+      <textarea id="pasteText" rows="7" placeholder="Abstract&#10;&#10;Paragraph…&#10;&#10;Introduction&#10;&#10;Paragraph…"></textarea>
+      <button class="btn" id="loadPaste">Use this text</button>
+    </section>
+  </div>
+  <p class="hint small">Each paper keeps its own marks in this browser. Switching papers doesn't erase anything.</p>
+  <div class="dlg-acts"><button class="btn ghost" data-close>Close</button></div>
+</dialog>
+
+<dialog id="dlgHelp" class="dlg narrow" aria-labelledby="dlgHelpH">
+  <h2 id="dlgHelpH">Reading with the keyboard</h2>
+  <dl class="keys">
+    <dt><kbd>Tab</kbd></dt><dd>Move from paragraph to paragraph.</dd>
+    <dt><kbd>Enter</kbd></dt><dd>Start selecting words in the paragraph you're on.</dd>
+    <dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Move one word.</dd>
+    <dt><kbd>Shift</kbd> + <kbd>←</kbd> <kbd>→</kbd></dt><dd>Stretch the selection.</dd>
+    <dt><kbd>1</kbd>–<kbd>4</kbd></dt><dd>Highlight: claim, evidence, method, lost.</dd>
+    <dt><kbd>U</kbd> <kbd>O</kbd> <kbd>B</kbd> <kbd>Q</kbd></dt><dd>Underline, circle, callout box, question.</dd>
+    <dt><kbd>[</kbd></dt><dd>Bracket the whole paragraph.</dd>
+    <dt><kbd>X</kbd></dt><dd>Erase the marks in the paragraph you're on (asks first).</dd>
+    <dt><kbd>R</kbd></dt><dd>Reading ruler on or off.</dd>
+    <dt><kbd>Esc</kbd></dt><dd>Stop selecting.</dd>
+  </dl>
+  <label class="chk"><input type="checkbox" id="lessMotion"> Less motion</label>
+  <div class="dlg-acts"><button class="btn ghost" data-close>Close</button></div>
+</dialog>
+
+<dialog id="dlgSheet" class="dlg wide" aria-labelledby="dlgSheetH">
+  <div class="sheet-acts no-print"><button class="btn" id="printSheet">Print</button><button class="btn ghost" data-close>Close</button></div>
+  <div id="breakdown" class="breakdown"></div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/specimen.js"></script>
+<script src="js/ink.js"></script>
+<script src="js/app.js"></script>
+<script src="js/jev.js"></script>
+<script src="js/gemini.js"></script>
+<script src="js/upload.js"></script>
+</body>
+</html>
