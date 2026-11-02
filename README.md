@@ -2,13 +2,14 @@
 
 A Grove Lab student build. **Idea by Rose Stafford (Biology, Senior, WRIT 3810 H01):** a tool that helps students who were "thrown into" scientific articles learn to read them, break them down, and ask questions about them. Prototype layers by Marc Watkins, coded with Anthropic's Claude.
 
-Rose's version one was "highlight the key points and write detailed summaries," with an AI assistant saved for later. This prototype keeps that order and builds it as three layers on the same paper:
+Rose's version one was "highlight the key points and write detailed summaries," with an AI assistant saved for later. This prototype keeps that order and builds it as three layers on the same paper, then adds Rose's own prototype as a fourth:
 
 | Layer | What it does | Who writes the words |
 |---|---|---|
 | **1 · Pencil** | Three reading passes (survey, mark it up, say it back). Four highlighter colors with fixed meanings (claim, evidence, method, lost), pencil underline, red circle for unknown words, callout boxes with margin notes, question stickies, paragraph brackets, a reading ruler, and a printable **My breakdown** sheet built only from the student's marks. | The student. Nothing on the breakdown is AI-written. |
 | **2 · Jev** | Jev (TypeSafe AI) reads each paragraph and returns probabilities: the paragraph's job (background, gap, method, result, interpretation, limitation, implication), how hedged it is, whether it states a main finding, and how dense it is. These go on a clear "acetate" sheet over the page that can be lifted off. Rules compare Jev's numbers with the student's marks and write **second looks**. Jev also checks say-it-back cards (accuracy, overstating, adding claims, copying) and sorts question stickies by where in the paper to look. | Rules a person wrote. Jev only supplies numbers, and every number is shown. |
 | **3 · Gemini** | A skill file, `clarify-reading-coach`, that makes Gemini a reading coach rather than a summarizer, plus a **packet** built from the student's marks to paste into it. | Gemini, under the skill's rules: ask first, cite ¶ numbers, keep the authors' hedges, never write the student's cards, end with an AI-use note. |
+| **4 · Breakdown (Rose's build)** | Rose's own prototype, ported from her React code to plain JavaScript and kept as she designed it: Gemini writes a 10-second takeaway, central question, plain-language overview, five section cards, a jargon decoder, and discussion questions, and a Reading Assistant chat answers questions about the paper. Her prompts are used verbatim. | Gemini, under Rose's prompts. Labeled AI-written, with a "check it against the paper" note and the original text one click away. |
 
 The design follows Rose's "Look and feel" answer (closer to Focused Reading Lab: quiet and clean) and her accessibility answers (keyboard only, less motion, plain language).
 
@@ -21,8 +22,9 @@ The design follows Rose's "Look and feel" answer (closer to Focused Reading Lab:
 - `js/app.js`: layer 1, paper loading (practice paper, Europe PMC open-access search or PMCID, paste your own), marking by mouse or keyboard, margin layout, breakdown sheet, localStorage.
 - `js/jev.js`: layer 2. The exact questions Jev is asked are at the top of the file and shown in the app under "What Jev was asked."
 - `js/gemini.js`: layer 3, the packet builder.
+- `js/breakdown.js`: layer 4, Rose's build. Her two sample papers, her prepared coral analysis, her breakdown and assistant prompts, and the Gemini connection (a key kept in this browser, a proxy URL, or copy-and-paste with no key). Markdown in Gemini's replies is rendered with marked 12.0.2 and cleaned with DOMPurify 3.1.6 (cdnjs).
 - `js/upload.js`: opens PDF, Word (.docx), and text or Markdown files in the browser. PDFs go through pdf.js 3.11.174 and Word files through mammoth 1.6.0, both from cdnjs and loaded only when a file is chosen. The extracted text lands in the paste box for the student to check before using it.
-- `how-to-use/index.html`: the student guide to the three layers (linked as "How to use" in the app header). Its example paragraph is drawn with the app's own `ink.js`. Printable.
+- `how-to-use/index.html`: the student guide to the four layers (linked as "How to use" in the app header). Its example paragraph is drawn with the app's own `ink.js`. Printable.
 - `gemini/clarify-reading-coach/SKILL.md`: the skill (Agent Skills format with YAML front matter).
 - `gemini/gem-instructions.md`: a shorter version for the Instructions box of a Gemini Gem.
 
@@ -47,6 +49,17 @@ Static files. Serve the folder (`python3 -m http.server`) or publish it on GitHu
 
 Nothing needs a key. Jev runs through the existing Jev Sandbox Worker, which accepts any origin (`ALLOWED_ORIGINS = "*"`); if that Worker is ever locked to specific sites, add the new Pages origin to it.
 
+## Layer 4: porting notes
+
+Rose's prototype was written for a hosted app platform (React with `useSyncedValue`, `useGenerate`, `useChat`, `usePresence`, `useBuilder`) and can't run on a static site as-is. The port keeps her layout, wording, prompts, JSON schema, and fallback parser, and changes these:
+
+- **Paper input** uses Clarify's paper chooser (practice paper, open-access search, upload, paste) instead of her separate form. Her two samples are in the chooser under "Rose's sample papers," and they open in every layer.
+- **Gemini** connects with an API key stored only in the browser (Google's API accepts browser calls), a proxy URL, or copy-and-paste into any Gemini with no key. The default model is `gemini-2.5-flash`; it can be changed in Connect.
+- **Dropped:** shared presence (who sent a chat message), the platform's builder tool, and her `explain_concept_with_analogy` tool, which returned a fixed string and didn't change the answer.
+- **Added:** a provenance line under each breakdown (who wrote it, when, "check it against the paper"), and a failed rerun keeps the earlier breakdown.
+- **Check before class:** her sample texts are summaries of the real papers (Cleves et al. 2018, PNAS; Pauken et al. 2016, Science) written for the prototype, so they're labeled that way. The prepared coral analysis has one claim the sample text doesn't support ("breeding corals that can withstand 1.5°C to 2°C ... spikes") and a typo ("molecular molecular"). Both are left as Rose wrote them. The input form's "sample biology paper from WRIT 3810" label was dropped.
+- **Not tested with a real key:** the live path was tested with a stand-in response and against Google's endpoint with an invalid key, which returned the expected error.
+
 ## Outside services
 
 - **Jev** through the existing Jev Sandbox Worker (`https://jev-sandbox-proxy.watkins-um.workers.dev`). Same limits: 60 requests a minute, 6,000 characters of state, 8 questions per request. One request per paragraph (4 questions), so the practice paper costs 17 requests. Paragraphs over 5,950 characters are trimmed.
@@ -55,7 +68,7 @@ Nothing needs a key. Jev runs through the existing Jev Sandbox Worker, which acc
 
 ## Privacy
 
-Marks, notes, and cards stay in the browser's localStorage (`clarify.v1.*`), one record per paper. Layer 2 sends one paragraph, card, or question at a time to Jev through a proxy that stores nothing. Layer 3 sends nothing; the student decides what to paste into Gemini, and the packet options let them leave parts out.
+Marks, notes, and cards stay in the browser's localStorage (`clarify.v1.*`), one record per paper. Layer 2 sends one paragraph, card, or question at a time to Jev through a proxy that stores nothing. Layer 3 sends nothing; the student decides what to paste into Gemini, and the packet options let them leave parts out. Layer 4 sends the paper's text (up to 10,000 characters for a breakdown, 7,000 for chat context) and chat questions straight to Google only when a key or proxy is connected; the API key stays in the browser's localStorage (`clarify.v1.gemini`).
 
 ## Verified in the browser (October 27, 2026)
 

@@ -25,6 +25,7 @@
     <button role="tab" id="tab-pencil" aria-selected="true" aria-controls="rail" data-layer="pencil"><b>1</b> Pencil <span>you read</span></button>
     <button role="tab" id="tab-jev" aria-selected="false" aria-controls="rail" data-layer="jev"><b>2</b> Jev <span>numbers on acetate</span></button>
     <button role="tab" id="tab-gemini" aria-selected="false" aria-controls="rail" data-layer="gemini"><b>3</b> Gemini <span>a coach, with rules</span></button>
+    <button role="tab" id="tab-breakdown" aria-selected="false" aria-controls="rail" data-layer="breakdown"><b>4</b> Breakdown <span>Rose's build</span></button>
   </nav>
   <div class="top-acts">
     <a class="btn ghost" href="how-to-use/index.html" target="_blank" rel="noopener">How to use</a>
@@ -152,6 +153,28 @@
         <ul id="readiness"></ul>
       </div>
     </section>
+
+    <!-- ROSE'S BUILD -->
+    <section class="rail-pane" data-pane="breakdown" hidden>
+      <div class="card rose">
+        <h2>Rose's build</h2>
+        <p class="hint">This is Rose Stafford's own version of Clarify, from her prototype: Gemini reads the paper and breaks it down, and a reading assistant answers your questions. Her prompts are used as she wrote them.</p>
+        <p class="hint">It works the other way around from layers 1 to 3. Here the AI explains first. Try it after your survey pass, and check what it says against the paper.</p>
+      </div>
+      <div class="card">
+        <h2>Gemini</h2>
+        <p class="hint small" id="bdConn"></p>
+        <div class="row" style="margin-top:8px"><button class="btn" id="bdRun">Clarify &amp; Explain Paper →</button><button class="btn ghost" id="bdConnBtn">Connect</button></div>
+      </div>
+      <details class="card about" id="bdManual">
+        <summary>No key? Copy and paste</summary>
+        <p class="hint" style="margin-top:8px">Copy Rose's prompt with this paper, paste it into your university's Gemini, then paste Gemini's whole reply here.</p>
+        <button class="btn ghost" id="bdCopyPrompt">Copy the prompt</button>
+        <label class="field" for="bdPaste">Gemini's reply</label>
+        <textarea id="bdPaste" rows="5" placeholder='{ "headline": … }'></textarea>
+        <button class="btn" id="bdApply" style="margin-top:8px">Use this reply</button>
+      </details>
+    </section>
   </aside>
 
   <main class="desk" id="desk">
@@ -177,6 +200,18 @@
       </div>
       <div class="markpop" id="markpop" role="dialog" aria-label="This mark" hidden></div>
     </div>
+
+    <section class="bd-desk" id="bdDesk" hidden aria-label="Rose's breakdown">
+      <div class="bd-main">
+        <div class="bd-meta"><div id="bdMeta"></div><button class="btn ghost small" id="bdChange">Change text</button></div>
+        <div id="bdOut" aria-live="polite"></div>
+      </div>
+      <aside class="bd-chat" aria-label="Reading assistant">
+        <div class="chat-head"><span><i class="dot"></i>Reading Assistant</span><button class="linkish" id="chatClear" hidden>Clear chat</button></div>
+        <div class="chat-log" id="chatLog" aria-live="polite"></div>
+        <form class="chat-form" id="chatForm"><label class="sr" for="chatIn">Ask a question about this article</label><input id="chatIn" placeholder="Ask a question about this article..." autocomplete="off"><button class="btn">Send</button></form>
+      </aside>
+    </section>
 
     <section class="gem-desk" id="gemDesk" hidden aria-label="Gemini hand-off">
       <div class="gem-col">
@@ -225,7 +260,7 @@
 
 <footer class="foot">
   <div><b>Clarify</b>: a Grove Lab student build. Idea by Rose Stafford, Biology, Senior. Prototype layers by Marc Watkins, University of Mississippi, coded with Anthropic's Claude.</div>
-  <div><b>Privacy.</b> Your marks and notes stay in this browser. Layer 2 sends one paragraph at a time to Jev (TypeSafe AI) through a proxy that stores nothing. Layer 3 sends only what you paste into Gemini.</div>
+  <div><b>Privacy.</b> Your marks and notes stay in this browser. Layer 2 sends one paragraph at a time to Jev (TypeSafe AI) through a proxy that stores nothing. Layer 3 sends only what you paste into Gemini. Layer 4 sends the paper and your questions to Google only when you connect Gemini or paste it yourself.</div>
 </footer>
 
 <!-- dialogs -->
@@ -236,6 +271,9 @@
       <h3>Practice paper</h3>
       <p class="hint">A short paper written for Clarify about city lights and birdsong. The study is invented. The structure is real.</p>
       <button class="btn" id="loadSpecimen">Open the practice paper</button>
+      <h3 style="margin-top:10px">Rose's sample papers</h3>
+      <p class="hint">From Rose's prototype. Each is a summary of a real paper, not the paper itself.</p>
+      <div id="roseSamples" class="pmc-results"></div>
     </section>
     <section>
       <h3>Open-access paper</h3>
@@ -290,6 +328,20 @@
   <div id="breakdown" class="breakdown"></div>
 </dialog>
 
+<dialog id="dlgGemini" class="dlg narrow" aria-labelledby="dlgGeminiH">
+  <h2 id="dlgGeminiH">Connect Gemini</h2>
+  <p class="hint">For layer 4 only. Use one of these. Both are saved only in this browser.</p>
+  <label class="field" for="gmKey">Gemini API key</label>
+  <input id="gmKey" type="password" autocomplete="off" placeholder="From Google AI Studio">
+  <label class="field" for="gmModel">Model</label>
+  <input id="gmModel" placeholder="gemini-2.5-flash">
+  <label class="field" for="gmProxy">Or a proxy URL (set up by your instructor)</label>
+  <input id="gmProxy" placeholder="https://…workers.dev/gemini">
+  <p class="hint small">With a key, the paper and your questions go straight from this browser to Google. Don't use a key on a shared computer.</p>
+  <p class="hint small" id="gmMsg" aria-live="polite"></p>
+  <div class="dlg-acts row"><button class="btn ghost" id="gmForget">Forget</button><button class="btn ghost" id="gmTest">Test</button><button class="btn" id="gmSave">Save</button></div>
+</dialog>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="js/specimen.js"></script>
@@ -298,5 +350,8 @@
 <script src="js/jev.js"></script>
 <script src="js/gemini.js"></script>
 <script src="js/upload.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+<script src="js/breakdown.js"></script>
 </body>
 </html>

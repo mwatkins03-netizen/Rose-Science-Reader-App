@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How to Use Clarify</title>
-<meta name="description" content="A student guide to Clarify's three layers: reading with a pencil, Jev's numbers on acetate, and the Gemini reading coach.">
+<meta name="description" content="A student guide to Clarify's four layers: reading with a pencil, Jev's numbers on acetate, the Gemini reading coach, and Rose's breakdown.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
@@ -33,9 +33,9 @@ h2 .n { font: 600 13px var(--mono); color: var(--muted); display: block; margin-
 h3 { font: 700 18px var(--serif); margin: 28px 0 6px; }
 .lede { font: 19px/1.55 var(--serif); color: var(--ink-2); margin: 0 0 18px; }
 p, li { color: var(--ink); }
-.toc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 26px 0 8px; }
+.toc { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 26px 0 8px; }
 .toc a { display: block; text-decoration: none; color: var(--ink); background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 14px; border-top: 3px solid var(--graphite); }
-.toc a:nth-child(2) { border-top-color: var(--jev); } .toc a:nth-child(3) { border-top-color: var(--gem); }
+.toc a:nth-child(2) { border-top-color: var(--jev); } .toc a:nth-child(3) { border-top-color: var(--gem); } .toc a:nth-child(4) { border-top-color: #115e59; }
 .toc b { display: block; font: 700 17px var(--serif); }
 .toc span { font-size: 13.5px; color: var(--ink-2); }
 .toc .k { font: 600 11px var(--mono); color: var(--muted); }
@@ -89,19 +89,20 @@ details p { margin: 8px 0 0; color: var(--ink-2); font-size: 15px; }
 <body>
 <header class="top">
   <span class="mark" aria-hidden="true">C</span><b>Clarify</b>
-  <nav><a class="btn ghost" href="#pencil">1 Pencil</a><a class="btn ghost" href="#jev">2 Jev</a><a class="btn ghost" href="#gemini">3 Gemini</a><button class="btn ghost" onclick="print()">Print this guide</button><a class="btn" href="../index.html">Open Clarify</a></nav>
+  <nav><a class="btn ghost" href="#pencil">1 Pencil</a><a class="btn ghost" href="#jev">2 Jev</a><a class="btn ghost" href="#gemini">3 Gemini</a><a class="btn ghost" href="#breakdown">4 Breakdown</a><button class="btn ghost" onclick="print()">Print this guide</button><a class="btn" href="../index.html">Open Clarify</a></nav>
 </header>
 
 <main class="page">
   <span class="eyebrow">Student guide</span>
   <h1>How to use Clarify</h1>
   <p class="lede">Scientific papers are hard to read until someone shows you how. Clarify gives you a way in: you read the paper with a pencil first, and only then bring in two kinds of AI to check your reading and coach you through the hard parts.</p>
-  <p>Clarify has three layers. They're tabs at the top of the app, and they're meant to be used in order. Each one sits on top of the last, the way a clear sheet sits on top of a page.</p>
+  <p>Clarify has four layers. They're tabs at the top of the app, and the first three are meant to be used in order. Each one sits on top of the last, the way a clear sheet sits on top of a page.</p>
 
   <div class="toc">
     <a href="#pencil"><span class="k">LAYER 1</span><b>Pencil</b><span>You read and mark the paper. No AI. Everything here is your thinking.</span></a>
     <a href="#jev"><span class="k">LAYER 2</span><b>Jev</b><span>An AI that answers in numbers, not words. A second opinion on your marks.</span></a>
     <a href="#gemini"><span class="k">LAYER 3</span><b>Gemini</b><span>An AI that talks, held to rules. A coach for the parts you're still stuck on.</span></a>
+    <a href="#breakdown"><span class="k">LAYER 4</span><b>Breakdown</b><span>Rose's own build: Gemini explains the paper first, then answers your questions.</span></a>
   </div>
 
   <div class="note"><b>Why this order?</b> If an AI explains the paper first, you end up remembering the explanation, not the paper. If you read first, the AI has something to work with: your questions, your confusion, your words. That's what makes the help useful.</div>
@@ -217,6 +218,25 @@ details p { margin: 8px 0 0; color: var(--ink-2); font-size: 15px; }
   <div class="note gem"><b>If it breaks a rule, say so.</b> Type: <span class="quote">That's against the Clarify rules. Ask me first.</span> or <span class="quote">Which paragraph says that?</span> If it can't point to a paragraph, treat what it said as general background, not as what this paper found.</div>
   <div class="note warn"><b>Be honest about using it.</b> At the end, the coach gives you a one-line AI-use note. Keep it with your notes, and check your course's AI policy before using any of this in graded work. Your packet goes to Google when you paste it, so leave out anything private.</div>
 
+  <h2 id="breakdown"><span class="n">LAYER 4</span>Breakdown: Rose's build</h2>
+  <p>Clarify started as Rose Stafford's idea: put in a paper, get it broken down into pieces you can digest, then ask questions. Layer 4 is her prototype of that, kept the way she designed it. Gemini reads the paper and writes:</p>
+  <ul>
+    <li><b>The 10-Second Takeaway</b> and the paper's central question,</li>
+    <li>a <b>plain-language overview</b> and five cards, from the big picture to why it matters,</li>
+    <li>a <b>jargon decoder</b>, and</li>
+    <li><b>discussion questions</b> to take to class.</li>
+  </ul>
+  <p>The <b>Reading Assistant</b> on the right answers questions about the paper. Try the starter questions, like "Explain this like I'm a freshman."</p>
+  <div class="note warn"><b>This layer works the other way around.</b> In layers 1 to 3 you read first and the AI responds to you. Here the AI explains first. That's faster, and it's also how readers end up remembering the summary instead of the paper. A good habit: do your survey pass (layer 1) first, write the paper's question in your own words, then compare it with the breakdown's Central Question. Everything in this layer is AI-written, so check it against the paper. Use <b>View Original Source</b> to look.</div>
+  <h3>Running it</h3>
+  <p>Layer 4 needs Gemini. There are three ways:</p>
+  <ol class="steps">
+    <li><b>No key needed:</b> open <b>No key? Copy and paste</b>, choose <b>Copy the prompt</b>, paste it into your university's Gemini, then paste Gemini's whole reply back and choose <b>Use this reply</b>.</li>
+    <li><b>Your instructor set up a proxy:</b> choose <b>Connect</b> and paste the proxy address.</li>
+    <li><b>You have your own Gemini API key</b> (from Google AI Studio): choose <b>Connect</b> and paste it. It's saved only in this browser. Don't do this on a shared computer.</li>
+  </ol>
+  <p>Without a connection, the Reading Assistant copies your question together with the paper so you can paste both into Gemini. Rose's two sample papers (in <b>Change paper</b>) are summaries of real papers, not the papers themselves, and the coral sample comes with a breakdown already written.</p>
+
   <h2 id="session"><span class="n">PUTTING IT TOGETHER</span>A first session, about 45 minutes</h2>
   <table>
     <tr><th>Time</th><th>Layer</th><th>Do this</th></tr>
@@ -225,6 +245,7 @@ details p { margin: 8px 0 0; color: var(--ink-2); font-size: 15px; }
     <tr><td>5 min</td><td>Pencil</td><td>Pass 3: write your index cards without looking.</td></tr>
     <tr><td>5 min</td><td>Jev</td><td>Lay the acetate. Work through the second looks. Check your cards.</td></tr>
     <tr><td>10 min</td><td>Gemini</td><td>Paste your packet. Untangle your worst Lost spot. Finish with Explain it to a friend.</td></tr>
+    <tr><td>5 min</td><td>Breakdown</td><td>Optional: compare Rose's breakdown with your own index cards. Where do they disagree, and who's right?</td></tr>
   </table>
   <p>Last step: open <b>My breakdown</b>, fix anything you now understand better, and print it or save it as a PDF.</p>
 

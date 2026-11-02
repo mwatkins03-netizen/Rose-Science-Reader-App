@@ -288,7 +288,7 @@
   }
   function positionRuler() {
     const on = document.body.classList.contains("ruler"), card = $("#rulerCard");
-    card.hidden = !on || !App.current || document.body.dataset.layer === "gemini";
+    card.hidden = !on || !App.current || /gemini|breakdown/.test(document.body.dataset.layer);
     if (card.hidden) return;
     const b = App.paraBox(App.current), sheet = $("#sheet");
     card.style.left = sheet.offsetLeft + 18 + "px"; card.style.width = sheet.offsetWidth - 36 + "px"; card.style.top = b.bottom + 6 + "px";
@@ -408,13 +408,15 @@
     $$(".layers [role=tab]").forEach(b => b.setAttribute("aria-selected", b.dataset.layer === layer));
     $$(".rail-pane").forEach(p => p.hidden = p.dataset.pane !== layer);
     $("#gemDesk").hidden = layer !== "gemini";
-    $("#stage").hidden = layer === "gemini";
+    $("#bdDesk").hidden = layer !== "breakdown";
+    $("#stage").hidden = layer === "gemini" || layer === "breakdown";
     store.set("layer", layer);
     showPalette(null); hideMarkPop();
-    if (layer !== "gemini") requestAnimationFrame(redraw);
+    if (layer !== "gemini" && layer !== "breakdown") requestAnimationFrame(redraw);
     App.emit("layer", layer);
   }
   App.setLayer = setLayer;
+  App.loadDoc = loadDoc;
 
   /* ---------- events ---------- */
   function bind() {
@@ -461,7 +463,7 @@
     document.addEventListener("keydown", e => {
       const typing = e.target.matches && e.target.matches("input, textarea, select, [contenteditable]");
       if (e.key === "Escape") { if (ks || pending) { ks = null; getSelection().removeAllRanges(); showPalette(null); } hideMarkPop(); return; }
-      if (typing || e.metaKey || e.ctrlKey || e.altKey || document.querySelector("dialog[open]") || document.body.dataset.layer === "gemini") return;
+      if (typing || e.metaKey || e.ctrlKey || e.altKey || document.querySelector("dialog[open]") || /gemini|breakdown/.test(document.body.dataset.layer)) return;
       const k = e.key.toLowerCase();
       const para = e.target.closest && e.target.closest("[data-pid]");
       if (para && e.key === "Enter" && !ks) {
@@ -518,7 +520,7 @@
   }
 
   function gotoPara(pid) {
-    if (document.body.dataset.layer === "gemini") setLayer("pencil");
+    if (/gemini|breakdown/.test(document.body.dataset.layer)) setLayer("pencil");
     const p = $(`#p-${pid}`); if (!p) return;
     p.scrollIntoView({ behavior: document.body.classList.contains("less-motion") ? "auto" : "smooth", block: "center" });
     p.focus({ preventScroll: true }); p.classList.remove("flash"); void p.offsetWidth; p.classList.add("flash");
